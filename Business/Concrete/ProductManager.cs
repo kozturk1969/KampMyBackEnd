@@ -1,10 +1,14 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
 using Entities.DTOs;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,16 +26,44 @@ namespace Business.Concrete
             _ProductDal = productDal;
         }
 
+
+        [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
-            //Busibess Codes
+            //Business Codes
+            //validation
+            //
 
-            if (product.ProductName .Length <2)
-            {
-               
-                return new ErrorResult(Messages.ProductNameInvalid );
-            }
-                        
+            //// aşağıdaki kodlar fluint validation ile yapılacak
+            //if (product.UnitPrice <= 0)
+            //{
+
+            //}
+            //if (product.ProductName .Length <2)
+            //{
+
+            //    return new ErrorResult(Messages.ProductNameInvalid );
+            //}
+
+
+
+
+
+            ////Fluent validation ile validasyon kontrolü
+            //var context = new ValidationContext<Product>(product);
+            //ProductValidator productValidator = new ProductValidator();
+            //var result = productValidator.Validate(context);
+
+            //if (!result.IsValid)
+            //{
+            //    throw new ValidationException(result.Errors);
+            //}
+
+
+            //Bu kodu yapıyı kurunca yukarıdaki kodlar gerek kalmıyor
+            //ValidationAspect ilede bu koda gerek kalmıyor
+            //ValidationTool.Validate(new ProductValidator(), product);
+
 
             _ProductDal.Add(product);
             return new Result(true, Messages.ProductAdded);
