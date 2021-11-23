@@ -13,7 +13,10 @@ namespace ConsoleUI
         {
             // ProductTest();
 
-            CategoryTest();
+            // CategoryTest();
+
+            ProductDetailTest();
+
 
         }
 
@@ -30,10 +33,33 @@ namespace ConsoleUI
         {
             ProductManager productManager = new ProductManager(new EfProductDal());
 
-            foreach (var product in productManager.GetAllByCategoryId(2))
+            foreach (var product in productManager.GetAllByCategoryId(2).Data)
             {
                 Console.WriteLine(product.ProductName);
             }
+        }
+        private static void ProductDetailTest()
+        {
+            ProductManager productManager = new ProductManager(new EfProductDal());
+
+            var result = productManager.GetProductDetails();
+
+            if (result.Success == true)
+            {
+
+                foreach (var product in result.Data)
+                {
+                    Console.WriteLine(product.ProductName + "/" + product.CategoryName);
+                }
+            }
+            else
+            {
+                Console.WriteLine(result.Message);
+            
+            }
+
+
+
         }
     }
 }
