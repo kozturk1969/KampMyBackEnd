@@ -31,6 +31,7 @@ namespace Business.Concrete
         }
 
 
+        //[SecuredOperation("admin,ed,tor")]
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
