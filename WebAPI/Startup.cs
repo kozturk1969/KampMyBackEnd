@@ -40,6 +40,17 @@ namespace WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
 
+            //**********************************************************************
+            //Bu þekilde tüm sitelere izin veriliyor sanýrým    Configure deki app.UseCors("AllowAccess_To_API"); satýrýný da açmak gerekli.
+            //services.AddCors(options => options.AddPolicy("AllowAccess_To_API", 
+            //    policy => policy
+            //    .AllowAnyOrigin()
+            //    .AllowAnyMethod()
+            //    .AllowAnyHeader()
+            //));
+            //**********************************************************************
+            services.AddCors();
+
             services.AddControllers();
 
             services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
@@ -87,11 +98,24 @@ namespace WebAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
             }
+            app.ConfigureCustomExceptionMiddleware();
+
+           
+
+            //Bu þekilde kullanmak için ConfigureServices deki satýrlarýnda açýlmasý gerekiyor
+            //**********************************************************************
+            // app.UseCors("AllowAccess_To_API");
+            //**********************************************************************
+            //Aþaðýdaki Engin'in yöntemi.
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader());
+
+
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
+          
             app.UseAuthentication();
 
             app.UseAuthorization();

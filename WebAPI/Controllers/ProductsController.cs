@@ -2,6 +2,7 @@
 using Business.Concrete;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,6 +14,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+   // [EnableCors("AllowAccess_To_API")]
     public class ProductsController : ControllerBase
     {
         
@@ -55,6 +57,19 @@ namespace WebAPI.Controllers
 
         }
 
+        [HttpGet("getByCategory")]
+        public IActionResult GetByCategory(int categoryId)
+        {
+
+            var result = _productService.GetAllByCategoryId(categoryId);
+            if (result.Success)
+            {
+                return Ok(result);
+
+            }
+            return BadRequest(result);
+
+        }
 
         [HttpPost("add")]
         public IActionResult Add(Product product)
